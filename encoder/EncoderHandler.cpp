@@ -408,7 +408,7 @@ void EncoderHandler::configureEncoder(EncoderParameter *encParameter)
   } else {
     inputFile = new QFile(fileName);
     if (!inputFile->open(QIODevice::ReadOnly)) {
-      cerr << qPrintable(QObject::tr("ERROR: Couldn't get read only access to: ").arg(fileName));
+      toCerr(QObject::tr("ERROR: Couldn't get read only access to: ").arg(fileName));
       this->exit(-2);
       return;
     }
@@ -418,7 +418,7 @@ void EncoderHandler::configureEncoder(EncoderParameter *encParameter)
   fileName = encParameter->getOutputFileName();
   outputFile = new QFile(fileName, this);
   if (!outputFile->open(QIODevice::WriteOnly)) {
-    cerr << qPrintable(QObject::tr("ERROR: Couldn't get write only access to: %1").arg(fileName));
+    toCerr(QObject::tr("ERROR: Couldn't get write only access to: %1").arg(fileName));
     this->exit(-3);
     return;
   }
