@@ -1,0 +1,8 @@
+
+# /
+/build
+/release
+/debug
+/Makefile*
+/*.pdb
+/_plugin_import.cpp

@@ -1,0 +1,18 @@
+Create IYUV:
+ffmpeg -v -10 -r 25.000 -i test.avi -threads 8 -vsync 0 -an -r 25 -pix_fmt yuv420p -f rawvideo test.yuv
+
+mencoder test.avi -ovc raw -noskip -vid 0 -vf scale,format=i420 -forcedsubsonly -noautosub -nosound -mc 0 -lavdopts threads=8 -really-quiet -fps 25 -aspect 1.81818:1 -of rawvideo -o test.yuv
+
+Create NV12:
+ffmpeg -v -10 -r 25.000 -i test.avi -threads 8 -vsync 0 -an -r 25 -pix_fmt nv12 -f rawvideo test.yuv
+
+
+
+FAST Encoding of ElephantsDream:
+----------------------------------
+mencoder -dvd-device "D:\ElephantsDream\VIDEO_TS" dvd://1 -ovc raw -noskip -vc mpeg12 -vf scale,format=i420 -forcedsubsonly -noautosub -nosound -mc 0 -lavdopts threads=8 -really-quiet -fps 25 -aspect 1.7775:1 -of rawvideo -o - | cuda --input - --resolution 720x576 --output test.264 --cavlc true --deblock false --slices 4 --sps_pps false
+
+
+Fast .avi Encoding:
+------------------------
+ffmpeg -v -10 -r 25 -i test.avi -threads 8 -vsync 0 -an -r 25 -pix_fmt yuv420p -f rawvideo - | cuda --input - --resolution 640x352 --output test.264 --showFrameStats 100
