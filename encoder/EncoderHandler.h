@@ -10,6 +10,7 @@
 #include <QObject>
 #include <QString>
 #include <QtGlobal>
+#include "nvidiaHeader/mywindows.h"
 #include "EncoderParameter.h"
 class QFile;
 class MyTimer;

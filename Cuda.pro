@@ -21,12 +21,30 @@ SOURCES += main.cpp \
     encoder/EncoderParameter.cpp \
     encoder/MyTimer.cpp
 QMAKE_LIBDIR += $${PWD}/lib
-win32 { 
-    !contains(QMAKE_HOST.arch, x86_64) { 
+win32-msvc* {
+    message(Building for Windows using Qt $$QT_VERSION)
+    CONFIG += c++11 # C++11 support
+    QMAKE_CXXFLAGS += /bigobj # allow big objects
+    !contains(QMAKE_HOST.arch, x86_64):QMAKE_LFLAGS += /LARGEADDRESSAWARE # allow the use more of than 2GB of RAM on 32bit Windows
+
+    # # add during static build
+    # QMAKE_CFLAGS_RELEASE += -MT
+    # QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO += -MT
+    # QMAKE_CFLAGS_DEBUG = -Zi -MTd
+    # QMAKE_LFLAGS += /DYNAMICBASE:NO
+    # for Windows XP compatibility
+    contains(QMAKE_HOST.arch, x86_64):QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,5.02 # Windows XP 64bit
+    else:QMAKE_LFLAGS += /SUBSYSTEM:WINDOWS,5.01 # Windows XP 32bit
+}
+greaterThan(QT_MAJOR_VERSION, 4) { # QT5+
+    win32-msvc*:DEFINES += NOMINMAX
+}
+win32 {
+    !contains(QMAKE_HOST.arch, x86_64) {
         message("x86 build")
         LIBS += $${PWD}/lib/nvcuvenc.lib
     }
-    else { 
+    else {
         message("x86_64 build")
         LIBS += $${PWD}/lib/nvcuvenc64.lib
     }
